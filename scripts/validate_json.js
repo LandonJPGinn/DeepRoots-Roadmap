@@ -18,57 +18,42 @@ function validateRoadmap() {
     exitWithError(`Error reading or parsing ${ROADMAP_PATH}: ${error.message}`);
   }
 
-  if (data.lastUpdated && typeof data.lastUpdated !== 'string') {
-    exitWithError('"lastUpdated" field must be a string.');
+  // Check for root properties
+  if (typeof data.lastUpdated !== 'string' || !data.lastUpdated) {
+    exitWithError('"lastUpdated" field is missing or invalid.');
+  }
+  if (!data.releases || typeof data.releases !== 'object' || Array.isArray(data.releases)) {
+    exitWithError('"releases" field must be a non-array object.');
   }
 
-  if (!data.columns || !Array.isArray(data.columns)) {
-    exitWithError('"columns" field is missing or not an array.');
-  }
+  // Check each release
+  for (const releaseName in data.releases) {
+    if (Object.hasOwnProperty.call(data.releases, releaseName)) {
+      const tasks = data.releases[releaseName];
 
-  for (const [columnIndex, column] of data.columns.entries()) {
-    if (typeof column !== 'object' || column === null) {
-      exitWithError(`Column at index ${columnIndex} is not a valid object.`);
-    }
-    if (typeof column.id !== 'string' || !column.id) {
-      exitWithError(`Column at index ${columnIndex} has a missing or invalid "id".`);
-    }
-    if (typeof column.title !== 'string' || !column.title) {
-      exitWithError(`Column "${column.id}" is missing a "title".`);
-    }
-    if (column.description && typeof column.description !== 'string') {
-      exitWithError(`Column "${column.id}" has an invalid "description". It must be a string.`);
-    }
-    if (!column.tasks || !Array.isArray(column.tasks)) {
-      exitWithError(`Column "${column.id}" is missing a "tasks" array.`);
-    }
+      if (!Array.isArray(tasks)) {
+        exitWithError(`Release "${releaseName}" must contain an array of tasks.`);
+      }
 
-    for (const [taskIndex, task] of column.tasks.entries()) {
+      // Check each task in the release
+      for (const task of tasks) {
         if (typeof task !== 'object' || task === null) {
-            exitWithError(`Task at index ${taskIndex} in column "${column.id}" is not a valid object.`);
+          exitWithError(`A task in "${releaseName}" is not a valid object.`);
         }
-      if (typeof task.title !== 'string' || !task.title) {
-        exitWithError(`Task in column "${column.id}" is missing a "title".`);
-      }
-      if (task.id && typeof task.id !== 'string') {
-        exitWithError(`Task "${task.title}" has an invalid "id". It must be a string.`);
-      }
-      if (task.description && typeof task.description !== 'string') {
-        exitWithError(`Task "${task.title}" has an invalid "description". It must be a string.`);
-      }
-      if (task.priority && !['High', 'Medium', 'Low'].includes(task.priority)) {
-        exitWithError(`Task "${task.title}" has an invalid "priority". It must be "High", "Medium", or "Low".`);
-      }
-      if (task.tags && (!Array.isArray(task.tags) || !task.tags.every(tag => typeof tag === 'string'))) {
-        exitWithError(`Task "${task.title}" has an invalid "tags" field. It must be an array of strings.`);
-      }
-      if (task.assignee && typeof task.assignee !== 'string') {
-        exitWithError(`Task "${task.title}" has an invalid "assignee". It must be a string.`);
+        if (typeof task.name !== 'string' || !task.name) {
+          exitWithError(`A task in "${releaseName}" is missing a "name".`);
+        }
+        if (typeof task.completed !== 'boolean') {
+          exitWithError(`Task "${task.name}" is missing a "completed" boolean flag.`);
+        }
+        if (typeof task.url !== 'string' || !task.url.startsWith('https://app.asana.com')) {
+            exitWithError(`Task "${task.name}" has an invalid Asana URL.`);
+        }
       }
     }
   }
 
-  console.log('Validation successful!');
+  console.log('Validation successful! The roadmap.json structure is correct.');
 }
 
 validateRoadmap();
