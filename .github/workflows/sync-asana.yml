@@ -9,6 +9,8 @@ on:
 jobs:
   sync-tasks:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed to commit and push changes
     
     steps:
       - name: Checkout repository
