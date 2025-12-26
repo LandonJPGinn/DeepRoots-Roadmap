@@ -125,7 +125,7 @@ function createTaskElement(task) {
     metaDiv.className = 'task-meta';
     
     // Priority tag
-    if (task.priority) {
+    if (task.priority && typeof task.priority === 'string') {
         const priorityTag = document.createElement('span');
         priorityTag.className = `task-tag priority-${task.priority.toLowerCase()}`;
         priorityTag.textContent = task.priority;
@@ -161,11 +161,21 @@ function updateLastUpdated() {
     
     if (roadmapData.lastUpdated) {
         const date = new Date(roadmapData.lastUpdated);
-        lastUpdatedElement.textContent = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        // Validate the date is valid
+        if (!isNaN(date.getTime())) {
+            lastUpdatedElement.textContent = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } else {
+            // Fall back to current date if invalid
+            lastUpdatedElement.textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
     } else {
         lastUpdatedElement.textContent = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
