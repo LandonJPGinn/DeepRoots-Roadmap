@@ -1,0 +1,103 @@
+{
+  "lastUpdated": "2025-12-26",
+  "columns": [
+    {
+      "id": "planned",
+      "title": "Planned",
+      "description": "Features and improvements we're planning",
+      "tasks": [
+        {
+          "id": "task-1",
+          "title": "User Authentication System",
+          "description": "Implement secure user authentication with OAuth2",
+          "priority": "High",
+          "tags": ["security", "backend"],
+          "assignee": "Dev Team"
+        },
+        {
+          "id": "task-2",
+          "title": "Mobile App Design",
+          "description": "Create responsive mobile-first design",
+          "priority": "Medium",
+          "tags": ["ui/ux", "mobile"],
+          "assignee": "Design Team"
+        },
+        {
+          "id": "task-3",
+          "title": "API Documentation",
+          "description": "Complete API documentation with examples",
+          "priority": "Low",
+          "tags": ["documentation", "api"]
+        }
+      ]
+    },
+    {
+      "id": "in-progress",
+      "title": "In Progress",
+      "description": "Currently being worked on",
+      "tasks": [
+        {
+          "id": "task-4",
+          "title": "Database Migration",
+          "description": "Migrate from PostgreSQL to distributed database",
+          "priority": "High",
+          "tags": ["backend", "database"],
+          "assignee": "Backend Team"
+        },
+        {
+          "id": "task-5",
+          "title": "Performance Optimization",
+          "description": "Optimize page load times and API response",
+          "priority": "Medium",
+          "tags": ["performance", "optimization"],
+          "assignee": "Full Stack Team"
+        }
+      ]
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "description": "In quality assurance",
+      "tasks": [
+        {
+          "id": "task-6",
+          "title": "Payment Integration",
+          "description": "Stripe payment gateway integration",
+          "priority": "High",
+          "tags": ["payment", "integration"],
+          "assignee": "QA Team"
+        }
+      ]
+    },
+    {
+      "id": "completed",
+      "title": "Completed",
+      "description": "Released features",
+      "tasks": [
+        {
+          "id": "task-7",
+          "title": "Landing Page Redesign",
+          "description": "New modern landing page with improved UX",
+          "priority": "High",
+          "tags": ["frontend", "ui/ux"]
+        },
+        {
+          "id": "task-8",
+          "title": "Email Notifications",
+          "description": "Automated email notifications for user actions",
+          "priority": "Medium",
+          "tags": ["feature", "notifications"],
+          "assignee": "Backend Team"
+        },
+        {
+          "id": "task-9",
+          "title": "Dark Mode Support",
+          "description": "Added dark mode theme option",
+          "priority": "Low",
+          "tags": ["frontend", "ui/ux"],
+          "assignee": "Frontend Team"
+        }
+      ]
+    }
+  ]
+}
