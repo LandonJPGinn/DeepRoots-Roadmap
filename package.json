@@ -1,0 +1,19 @@
+{
+  "name": "deeproots-roadmap",
+  "version": "1.0.0",
+  "description": "Public facing roadmap for Deep Roots",
+  "main": "scripts/sync-asana.js",
+  "scripts": {
+    "sync": "node scripts/sync-asana.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LandonJPGinn/DeepRoots-Roadmap.git"
+  },
+  "keywords": [
+    "roadmap",
+    "asana"
+  ],
+  "author": "",
+  "license": "ISC"
+}
