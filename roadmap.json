@@ -1,34 +1,4 @@
 {
-  "lastUpdated": "2025-12-26T00:00:00.000Z",
-  "releases": {
-    "v1.0": [
-      {
-        "name": "Example Task 1",
-        "completed": false,
-        "notes": "This is a sample task description",
-        "due_on": "2025-12-31",
-        "url": "https://app.asana.com/0/project/task"
-      }
-    ],
-    "v2.0": [
-      {
-        "name": "Example Task 2",
-        "completed": false,
-        "notes": "Another sample task",
-        "due_on": "2026-03-15",
-        "url": "https://app.asana.com/0/project/task"
-      }
-    ],
-    "Unscheduled": [
-      {
-        "name": "Example Task 3",
-        "completed": false,
-        "notes": "Task without release assignment",
-        "due_on": null,
-        "url": "https://app.asana.com/0/project/task"
-      }
-    ]
-  }
   "lastUpdated": "2025-12-26",
   "columns": [
     {
