@@ -34,9 +34,13 @@ function asanaRequest(path) {
 
       res.on('end', () => {
         if (res.statusCode === 200) {
-          resolve(JSON.parse(data));
+          try {
+            resolve(JSON.parse(data));
+          } catch (parseError) {
+            reject(new Error(`Failed to parse API response: ${parseError.message}`));
+          }
         } else {
-          reject(new Error(`API request failed with status ${res.statusCode}: ${data}`));
+          reject(new Error(`API request failed with status ${res.statusCode}`));
         }
       });
     }).on('error', (err) => {
@@ -51,9 +55,21 @@ function asanaRequest(path) {
 async function fetchTasks() {
   console.log('Fetching tasks from Asana project...');
   
+  // Define the fields we want to fetch
+  const fields = [
+    'name',
+    'completed',
+    'tags.name',
+    'custom_fields.name',
+    'custom_fields.display_value',
+    'notes',
+    'due_on',
+    'permalink_url'
+  ].join(',');
+  
   // Get tasks with all relevant fields
   const response = await asanaRequest(
-    `/api/1.0/projects/${ASANA_PROJECT_ID}/tasks?opt_fields=name,completed,tags.name,custom_fields.name,custom_fields.display_value,notes,due_on,permalink_url`
+    `/api/1.0/projects/${ASANA_PROJECT_ID}/tasks?opt_fields=${fields}`
   );
   
   return response.data;

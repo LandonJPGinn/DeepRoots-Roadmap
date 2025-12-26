@@ -19,9 +19,6 @@ jobs:
         with:
           node-version: '20'
           
-      - name: Install dependencies
-        run: npm install
-        
       - name: Sync Asana tasks
         env:
           ASANA_ACCESS_TOKEN: ${{ secrets.ASANA_ACCESS_TOKEN }}
