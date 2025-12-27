@@ -57,6 +57,7 @@ async function fetchTasks() {
 
   // Define the fields we want to fetch
   const fields = [
+    'gid',
     'name',
     'completed',
     'tags.name',
@@ -77,9 +78,31 @@ async function fetchTasks() {
 }
 
 /**
+ * Fetch subtasks for a given task
+ */
+async function fetchSubtasks(taskGid) {
+  const fields = ['name', 'completed'].join(',');
+  const response = await asanaRequest(
+    `/api/1.0/tasks/${taskGid}/subtasks?opt_fields=${fields}`
+  );
+  return response.data;
+}
+
+/**
+ * Fetch dependencies for a given task
+ */
+async function fetchDependencies(taskGid) {
+  const fields = ['name', 'completed'].join(',');
+  const response = await asanaRequest(
+    `/api/1.0/tasks/${taskGid}/dependencies?opt_fields=${fields}`
+  );
+  return response.data;
+}
+
+/**
  * Process and organize tasks
  */
-function organizeTasks(tasks) {
+async function organizeTasks(tasks) {
   console.log(`Processing ${tasks.length} tasks...`);
 
   // Filter tasks with "public" tag
@@ -94,7 +117,7 @@ function organizeTasks(tasks) {
   // Organize by release custom field
   const roadmap = {};
 
-  publicTasks.forEach(task => {
+  for (const task of publicTasks) {
     // Find the release and status custom fields
     let release = 'Unscheduled';
     let status = 'On Hold'; // Default status
@@ -120,6 +143,10 @@ function organizeTasks(tasks) {
       roadmap[release] = [];
     }
 
+    // Fetch subtasks and dependencies
+    const subtasks = await fetchSubtasks(task.gid);
+    const dependencies = await fetchDependencies(task.gid);
+
     // Add task to the release
     roadmap[release].push({
       name: task.name,
@@ -128,8 +155,10 @@ function organizeTasks(tasks) {
       due_on: task.due_on || null,
       url: task.permalink_url || null,
       status: status,
+      subtasks: subtasks.map(t => ({ name: t.name, completed: t.completed })),
+      dependencies: dependencies.map(t => ({ name: t.name, completed: t.completed })),
     });
-  });
+  }
 
   return roadmap;
 }
@@ -145,7 +174,7 @@ async function main() {
     const tasks = await fetchTasks();
 
     // Organize tasks by release
-    const roadmap = organizeTasks(tasks);
+    const roadmap = await organizeTasks(tasks);
 
     // Write to JSON file
     const output = {
