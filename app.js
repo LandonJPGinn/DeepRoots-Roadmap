@@ -96,16 +96,25 @@ function createTaskElement(task) {
     const taskDiv = document.createElement('div');
     taskDiv.className = `task-card ${task.completed ? 'completed' : ''}`;
 
-    const taskTitle = document.createElement('div');
-    taskTitle.className = 'task-title';
-    taskTitle.textContent = task.name;
-    taskDiv.appendChild(taskTitle);
+    const taskLink = document.createElement('a');
+    taskLink.href = task.url;
+    taskLink.target = '_blank';
+    taskLink.rel = 'noopener noreferrer';
+    taskLink.textContent = task.name;
+    taskDiv.appendChild(taskLink);
 
     if (task.notes) {
         const notes = document.createElement('p');
         notes.className = 'task-notes';
         notes.textContent = task.notes;
         taskDiv.appendChild(notes);
+    }
+    
+    if (task.due_on) {
+        const dueDate = document.createElement('span');
+        dueDate.className = 'task-due-date';
+        dueDate.textContent = `Due: ${new Date(task.due_on).toLocaleDateString('en-US')}`;
+        taskDiv.appendChild(dueDate);
     }
     
     return taskDiv;

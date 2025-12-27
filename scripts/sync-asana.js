@@ -54,7 +54,7 @@ function asanaRequest(path) {
  */
 async function fetchTasks() {
   console.log('Fetching tasks from Asana project...');
-  
+
   const fields = [
     'name',
     'completed',
@@ -65,11 +65,11 @@ async function fetchTasks() {
     'due_on',
     'permalink_url'
   ].join(',');
-  
+
   const response = await asanaRequest(
     `/api/1.0/projects/${ASANA_PROJECT_ID}/tasks?opt_fields=${fields}`
   );
-  
+
   return response.data;
 }
 
@@ -78,29 +78,29 @@ async function fetchTasks() {
  */
 function organizeTasks(tasks) {
   console.log(`Processing ${tasks.length} tasks...`);
-  
+
   const publicTasks = tasks.filter(task =>
     task.tags && task.tags.some(tag => tag.name && tag.name.toLowerCase() === 'public')
   );
-  
+
   console.log(`Found ${publicTasks.length} public tasks.`);
-  
+
   const roadmap = {};
-  
+
   publicTasks.forEach(task => {
     let release = 'Unscheduled';
     const releaseField = task.custom_fields.find(field =>
       field.name && field.name.toLowerCase().includes('release')
     );
-    
+
     if (releaseField && releaseField.display_value) {
       release = releaseField.display_value;
     }
-    
+
     if (!roadmap[release]) {
       roadmap[release] = [];
     }
-    
+
     roadmap[release].push({
       name: task.name,
       completed: task.completed || false,
@@ -109,7 +109,7 @@ function organizeTasks(tasks) {
       url: task.permalink_url || null
     });
   });
-  
+
   return roadmap;
 }
 
@@ -121,21 +121,21 @@ async function main() {
     console.log('Starting Asana to JSON sync process...');
     const tasks = await fetchTasks();
     const roadmap = organizeTasks(tasks);
-    
+
     const output = {
       lastUpdated: new Date().toISOString(),
       releases: roadmap
     };
-    
+
     fs.writeFileSync('roadmap.json', JSON.stringify(output, null, 2));
     console.log('Successfully generated roadmap.json.');
-    
+
     console.log('\n--- Sync Summary ---');
     Object.keys(roadmap).forEach(release => {
       console.log(`  - ${release}: ${roadmap[release].length} tasks`);
     });
     console.log('--------------------');
-    
+
   } catch (error) {
     console.error('ERROR: Failed to sync Asana tasks.', error);
     process.exit(1);
