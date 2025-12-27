@@ -7,42 +7,48 @@
         "completed": false,
         "notes": "",
         "due_on": "2026-03-03",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614146"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614146",
+        "status": "Ready"
       },
       {
         "name": "Ranching",
         "completed": false,
         "notes": "",
         "due_on": "2026-08-15",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614148"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614148",
+        "status": "In Progress"
       },
       {
         "name": "FIshing",
         "completed": false,
         "notes": "",
         "due_on": "2027-01-01",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614150"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614150",
+        "status": "Testing"
       },
       {
         "name": "Bird Keeping",
         "completed": false,
         "notes": "",
         "due_on": "2026-07-28",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614152"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614152",
+        "status": "Completed"
       },
       {
         "name": "Shopping",
         "completed": false,
         "notes": "",
         "due_on": "2026-11-12",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614160"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614160",
+        "status": "Deployed"
       },
       {
         "name": "Foraging",
         "completed": false,
         "notes": "",
         "due_on": "2026-06-06",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614164"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614164",
+        "status": "On Hold"
       },
       {
         "name": "Movement Controls",
