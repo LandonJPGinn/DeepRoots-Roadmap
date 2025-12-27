@@ -1,130 +1,177 @@
-/* General Body Styles */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.6;
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+
+/* CSS Variables for easy theme management */
+:root {
+    --font-family-base: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --background-color: #F8F5F2; /* Cozy off-white */
+    --text-color: #3D3D3D;
+    --header-color: #2E2E2E;
+    --subtle-text-color: #7A7A7A;
+    --card-background: #FFFFFF;
+    --column-background: #EFEBE8;
+    --border-color: #EAEAEA;
+    --accent-color: #E57373; /* Soft red accent */
+    --shadow-color: rgba(0, 0, 0, 0.05);
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 64px;
+
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+}
+
+/* General Reset and Body Styling */
+* {
     margin: 0;
     padding: 0;
-    background: #f4f7f6;
-    color: #333;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 2rem 1rem;
     text-align: center;
-    border-bottom: 4px solid #5a67d8;
+    padding: var(--spacing-xxl) var(--spacing-lg);
 }
 
 header h1 {
-    margin: 0;
-    font-size: 2.5rem;
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: var(--header-color);
+    margin-bottom: var(--spacing-sm);
 }
 
-header .subtitle {
-    margin: 0.5rem 0 0;
+.subtitle {
     font-size: 1.1rem;
-    opacity: 0.9;
+    color: var(--subtle-text-color);
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 /* Main Content */
 main {
-    padding: 2rem 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    flex: 1;
+    width: 100%;
+    padding: 0 var(--spacing-lg) var(--spacing-xxl);
 }
 
 #roadmap-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-/* Loading and Error States */
-.loading, .error {
-    text-align: center;
-    padding: 2rem;
-    font-size: 1.2rem;
-    color: #555;
-    grid-column: 1 / -1; /* Span all columns */
-}
-
-.error {
-    color: #d9534f;
-    font-weight: bold;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Release Column */
 .release-column {
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease-in-out;
-}
-
-.release-column:hover {
-    transform: translateY(-5px);
+    background-color: var(--column-background);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
 }
 
 .release-title {
     font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e2e8f0;
-    color: #2d3748;
+    font-weight: 700;
+    color: var(--header-color);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
+    position: relative;
 }
 
-/* Task Card */
+.release-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+/* Tasks */
+.tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
 .task-card {
-    background: #f7fafc;
-    padding: 1rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    border-left: 4px solid #4299e1;
-    transition: box-shadow 0.2s;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.task-card:last-child {
-    margin-bottom: 0;
+/* Per-task hover animation */
+.task-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
-.task-card.completed {
-    border-left-color: #48bb78;
-    opacity: 0.8;
-}
-
-.task-card a {
-    font-weight: 600;
-    color: #2b6cb0;
-    text-decoration: none;
+.task-name {
     font-size: 1.1rem;
-}
-
-.task-card a:hover {
-    text-decoration: underline;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
 }
 
 .task-notes {
-    margin: 0.5rem 0;
-    color: #4a5568;
+    font-size: 0.95rem;
+    color: var(--subtle-text-color);
 }
 
-.task-due-date {
-    font-size: 0.85rem;
-    color: #718096;
-    display: block;
-    margin-top: 0.5rem;
+.task-card.completed .task-name {
+    text-decoration: line-through;
+    color: var(--subtle-text-color);
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 1.5rem;
-    color: #a0aec0;
+    padding: var(--spacing-lg);
+    color: var(--subtle-text-color);
     font-size: 0.9rem;
-    background: #2d3748;
+}
+
+/* Utility & Loading/Error States */
+.loading, .error, .no-tasks {
+    text-align: center;
+    padding: var(--spacing-xl);
+    font-size: 1.1rem;
+    color: var(--subtle-text-color);
+}
+
+.error {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.25rem;
+    }
+    #roadmap-container {
+        grid-template-columns: 1fr;
+    }
 }

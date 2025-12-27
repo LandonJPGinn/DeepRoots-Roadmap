@@ -1,11 +1,10 @@
 {
   "name": "deeproots-roadmap",
   "version": "1.0.0",
-  "description": "Public facing roadmap for Deep Roots, synced from Asana.",
+  "description": "Public facing roadmap for Deep Roots",
   "main": "scripts/sync-asana.js",
   "scripts": {
-    "sync": "node scripts/sync-asana.js",
-    "test": "node scripts/validate_json.js"
+    "sync": "node scripts/sync-asana.js"
   },
   "repository": {
     "type": "git",

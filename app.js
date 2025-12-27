@@ -1,121 +1,159 @@
 // Configuration
 const ROADMAP_JSON_PATH = 'roadmap.json';
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-    loadRoadmapData();
-});
+// DOM Elements
+const roadmapContainer = document.getElementById('roadmap-container');
+const loadingElement = document.getElementById('loading');
+const errorElement = document.getElementById('error');
+const lastUpdatedElement = document.getElementById('last-updated');
 
-// Load roadmap data from JSON file
+// Initialize
+document.addEventListener('DOMContentLoaded', loadRoadmapData);
+
+/**
+ * Fetches and renders the roadmap data.
+ */
 async function loadRoadmapData() {
-    const loadingElement = document.getElementById('loading');
-    const errorElement = document.getElementById('error');
-    
     try {
         const response = await fetch(ROADMAP_JSON_PATH);
-        
         if (!response.ok) {
-            throw new Error(`Failed to load roadmap data: ${response.status} ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-        const roadmapData = await response.json();
-        
+        const data = await response.json();
+
         // Validate data structure
-        if (!roadmapData || !roadmapData.releases || typeof roadmapData.releases !== 'object') {
-            throw new Error('Invalid roadmap data structure: missing releases object');
+        if (!data || !data.releases || typeof data.releases !== 'object') {
+            throw new Error('Invalid roadmap data structure: "releases" object not found.');
         }
-        
-        // Hide loading, show content
-        loadingElement.style.display = 'none';
-        renderReleases(roadmapData);
-        
-    } catch (error) {
-        console.error('Error loading roadmap:', error);
-        loadingElement.style.display = 'none';
-        errorElement.textContent = `Error: ${error.message}`;
-        errorElement.style.display = 'block';
+
+        renderRoadmap(data);
+        updateTimestamp(data.lastUpdated);
+
+    } catch (e) {
+        console.error('Failed to load or render roadmap:', e);
+        showError(e.message);
+    } finally {
+        hideLoading();
     }
 }
 
-// Render the releases and their tasks
-function renderReleases(data) {
-    const roadmapContainer = document.getElementById('roadmap-container');
-    const lastUpdatedElement = document.getElementById('last-updated');
-
-    // Clear existing content
+/**
+ * Renders the entire roadmap from the provided data.
+ * @param {object} data - The roadmap data object.
+ */
+function renderRoadmap(data) {
+    // Clear any existing content
     roadmapContainer.innerHTML = '';
 
-    // Update last updated timestamp
-    if (data.lastUpdated) {
-        const date = new Date(data.lastUpdated);
-        if (!isNaN(date.getTime())) {
-            lastUpdatedElement.textContent = `Last updated: ${date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-        }
+    const releaseKeys = Object.keys(data.releases);
+
+    if (releaseKeys.length === 0) {
+        roadmapContainer.innerHTML = '<p class="no-tasks">No releases found.</p>';
+        return;
     }
 
-    // Render each release as a column
-    for (const releaseName in data.releases) {
-        if (Object.hasOwnProperty.call(data.releases, releaseName)) {
-            const tasks = data.releases[releaseName];
-            const columnElement = createReleaseColumn(releaseName, tasks);
-            roadmapContainer.appendChild(columnElement);
-        }
-    }
+    releaseKeys.forEach(releaseName => {
+        const tasks = data.releases[releaseName];
+        const releaseColumn = createReleaseColumn(releaseName, tasks);
+        roadmapContainer.appendChild(releaseColumn);
+    });
 }
 
-// Create a column for a release
+/**
+ * Creates a column for a single release.
+ * @param {string} releaseName - The name of the release.
+ * @param {Array<object>} tasks - An array of task objects.
+ * @returns {HTMLElement} The created column element.
+ */
 function createReleaseColumn(releaseName, tasks) {
-    const columnDiv = document.createElement('div');
-    columnDiv.className = 'release-column';
-    
-    const header = document.createElement('h2');
-    header.className = 'release-title';
-    header.textContent = releaseName;
-    columnDiv.appendChild(header);
-    
+    const column = document.createElement('div');
+    column.className = 'release-column';
+
+    const title = document.createElement('h2');
+    title.className = 'release-title';
+    title.textContent = releaseName;
+    column.appendChild(title);
+
     const tasksContainer = document.createElement('div');
     tasksContainer.className = 'tasks-container';
-    
+
     if (tasks.length === 0) {
-        const noTasks = document.createElement('p');
-        noTasks.textContent = 'No tasks in this release yet.';
-        tasksContainer.appendChild(noTasks);
+        tasksContainer.innerHTML = '<p class="no-tasks">No tasks in this release.</p>';
     } else {
-        tasks.forEach(task => {
-            const taskElement = createTaskElement(task);
+        tasks.forEach(taskData => {
+            const taskElement = createTaskElement(taskData);
             tasksContainer.appendChild(taskElement);
         });
     }
-    
-    columnDiv.appendChild(tasksContainer);
-    return columnDiv;
+
+    column.appendChild(tasksContainer);
+    return column;
 }
 
-// Create a task card element
-function createTaskElement(task) {
-    const taskDiv = document.createElement('div');
-    taskDiv.className = `task-card ${task.completed ? 'completed' : ''}`;
-
-    const taskLink = document.createElement('a');
-    taskLink.href = task.url;
-    taskLink.target = '_blank';
-    taskLink.rel = 'noopener noreferrer';
-    taskLink.textContent = task.name;
-    taskDiv.appendChild(taskLink);
-
-    if (task.notes) {
-        const notes = document.createElement('p');
-        notes.className = 'task-notes';
-        notes.textContent = task.notes;
-        taskDiv.appendChild(notes);
+/**
+ * Creates an element for a single task.
+ * @param {object} taskData - The data for the task.
+ * @returns {HTMLElement} The created task element.
+ */
+function createTaskElement(taskData) {
+    const taskCard = document.createElement('div');
+    taskCard.className = 'task-card';
+    if (taskData.completed) {
+        taskCard.classList.add('completed');
     }
-    
-    if (task.due_on) {
-        const dueDate = document.createElement('span');
-        dueDate.className = 'task-due-date';
-        dueDate.textContent = `Due: ${new Date(task.due_on).toLocaleDateString('en-US')}`;
-        taskDiv.appendChild(dueDate);
+
+    const taskName = document.createElement('div');
+    taskName.className = 'task-name';
+    taskName.textContent = taskData.name || 'Unnamed Task';
+    taskCard.appendChild(taskName);
+
+    if (taskData.notes) {
+        const taskNotes = document.createElement('div');
+        taskNotes.className = 'task-notes';
+        taskNotes.textContent = taskData.notes;
+        taskCard.appendChild(taskNotes);
     }
-    
-    return taskDiv;
+
+    return taskCard;
+}
+
+/**
+ * Formats an ISO date string into a more readable format.
+ * @param {string} dateString - The ISO date string.
+ * @returns {string} The formatted date.
+ */
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+/**
+ * Updates the 'last updated' timestamp in the footer.
+ * @param {string} timestamp - The ISO timestamp string.
+ */
+function updateTimestamp(timestamp) {
+    if (timestamp && lastUpdatedElement) {
+        const date = new Date(timestamp);
+        lastUpdatedElement.textContent = `Last updated: ${date.toLocaleString()}`;
+    }
+}
+
+/**
+ * Hides the loading spinner.
+ */
+function hideLoading() {
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+}
+
+/**
+ * Displays an error message to the user.
+ * @param {string} message - The error message to display.
+ */
+function showError(message) {
+    if (errorElement) {
+        errorElement.textContent = `Error: ${message}`;
+        errorElement.style.display = 'block';
+    }
 }
