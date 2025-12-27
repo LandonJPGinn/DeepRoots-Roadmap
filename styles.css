@@ -23,6 +23,14 @@
 
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
+
+    /* Status Colors */
+    --status-ready: #20c997; /* teal */
+    --status-in-progress: #BDB2FF; /* lavender */
+    --status-testing: #FD7E14; /* orange */
+    --status-completed: #40E0D0; /* Robin Egg Blue */
+    --status-deployed: #66DDAA; /* sea foam green */
+    --status-on-hold: #ADB5BD; /* grey */
 }
 
 /* General Reset and Body Styling */
@@ -114,9 +122,11 @@ main {
 }
 
 .task-card {
+    position: relative;
     background-color: var(--card-background);
     border-radius: var(--border-radius-sm);
     padding: var(--spacing-md);
+    padding-bottom: 40px; /* Make space for the status */
     border: 1px solid var(--border-color);
     box-shadow: 0 2px 4px var(--shadow-color);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -144,6 +154,37 @@ main {
     text-decoration: line-through;
     color: var(--subtle-text-color);
 }
+
+/* Task Status */
+.task-status {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    display: flex;
+    align-items: center;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: var(--spacing-sm);
+    background-color: var(--status-on-hold); /* Default color */
+}
+
+.status-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--subtle-text-color);
+}
+
+/* Status-specific dot colors */
+.status-ready .status-dot { background-color: var(--status-ready); }
+.status-in-progress .status-dot { background-color: var(--status-in-progress); }
+.status-testing .status-dot { background-color: var(--status-testing); }
+.status-completed .status-dot { background-color: var(--status-completed); }
+.status-deployed .status-dot { background-color: var(--status-deployed); }
+.status-on-hold .status-dot { background-color: var(--status-on-hold); }
 
 /* Footer */
 footer {

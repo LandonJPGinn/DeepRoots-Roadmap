@@ -102,6 +102,12 @@ function createTaskElement(taskData) {
         taskCard.classList.add('completed');
     }
 
+    // Add a class for the status
+    if (taskData.status) {
+        const statusClass = `status-${taskData.status.toLowerCase().replace(/\s+/g, '-')}`;
+        taskCard.classList.add(statusClass);
+    }
+
     const taskName = document.createElement('div');
     taskName.className = 'task-name';
     taskName.textContent = taskData.name || 'Unnamed Task';
@@ -112,6 +118,23 @@ function createTaskElement(taskData) {
         taskNotes.className = 'task-notes';
         taskNotes.textContent = taskData.notes;
         taskCard.appendChild(taskNotes);
+    }
+
+    // Create and append the status element
+    if (taskData.status) {
+        const taskStatus = document.createElement('div');
+        taskStatus.className = 'task-status';
+
+        const statusDot = document.createElement('span');
+        statusDot.className = 'status-dot';
+        taskStatus.appendChild(statusDot);
+
+        const statusLabel = document.createElement('span');
+        statusLabel.className = 'status-label';
+        statusLabel.textContent = taskData.status;
+        taskStatus.appendChild(statusLabel);
+
+        taskCard.appendChild(taskStatus);
     }
 
     return taskCard;

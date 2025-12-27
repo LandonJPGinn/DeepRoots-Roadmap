@@ -62,6 +62,7 @@ async function fetchTasks() {
     'tags.name',
     'custom_fields.name',
     'custom_fields.display_value',
+    'custom_fields.enum_value',
     'notes',
     'due_on',
     'permalink_url'
@@ -94,16 +95,23 @@ function organizeTasks(tasks) {
   const roadmap = {};
 
   publicTasks.forEach(task => {
-    // Find the release custom field
+    // Find the release and status custom fields
     let release = 'Unscheduled';
+    let status = 'On Hold'; // Default status
 
     if (task.custom_fields && task.custom_fields.length > 0) {
       const releaseField = task.custom_fields.find(field =>
         field.name && field.name.toLowerCase().includes('release')
       );
-
       if (releaseField && releaseField.display_value) {
         release = releaseField.display_value;
+      }
+
+      const statusField = task.custom_fields.find(field =>
+        field.name && field.name.toLowerCase() === 'status'
+      );
+      if (statusField && statusField.display_value) {
+        status = statusField.display_value;
       }
     }
 
@@ -118,7 +126,8 @@ function organizeTasks(tasks) {
       completed: task.completed || false,
       notes: task.notes || '',
       due_on: task.due_on || null,
-      url: task.permalink_url || null
+      url: task.permalink_url || null,
+      status: status,
     });
   });
 
