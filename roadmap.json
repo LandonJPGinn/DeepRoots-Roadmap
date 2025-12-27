@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-27T18:54:04.265Z",
+  "lastUpdated": "2025-12-27T19:07:24.878Z",
   "releases": {
     "0.0.1": [
       {
@@ -16,7 +16,7 @@
         "notes": "",
         "due_on": "2026-08-15",
         "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614148",
-        "status": "In Progress"
+        "status": "Ready"
       },
       {
         "name": "FIshing",
@@ -24,7 +24,7 @@
         "notes": "",
         "due_on": "2027-01-01",
         "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614150",
-        "status": "Testing"
+        "status": "Ready"
       },
       {
         "name": "Bird Keeping",
@@ -32,7 +32,7 @@
         "notes": "",
         "due_on": "2026-07-28",
         "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614152",
-        "status": "Completed"
+        "status": "Ready"
       },
       {
         "name": "Shopping",
@@ -40,7 +40,7 @@
         "notes": "",
         "due_on": "2026-11-12",
         "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614160",
-        "status": "Deployed"
+        "status": "Ready"
       },
       {
         "name": "Foraging",
@@ -48,70 +48,79 @@
         "notes": "",
         "due_on": "2026-06-06",
         "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614164",
-        "status": "On Hold"
+        "status": "Ready"
       },
       {
         "name": "Movement Controls",
         "completed": false,
         "notes": "Need to hone in on movement controls that feel fun and enjoyable without turning the farmer into a high energy maniac\n\n",
         "due_on": "2026-01-31",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614168"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614168",
+        "status": "Ready"
       },
       {
         "name": "Dialog",
         "completed": false,
         "notes": "",
         "due_on": "2026-10-28",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614191"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614191",
+        "status": "Ready"
       },
       {
         "name": "Inventory",
         "completed": false,
         "notes": "",
         "due_on": "2026-10-09",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614193"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614193",
+        "status": "Ready"
       },
       {
         "name": "Tomato",
         "completed": false,
         "notes": "",
         "due_on": "2026-03-14",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572677627840"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572677627840",
+        "status": "Ready"
       },
       {
         "name": "Strawberries",
         "completed": false,
         "notes": "",
         "due_on": "2026-03-14",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572678690536"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572678690536",
+        "status": "Ready"
       },
       {
         "name": "Main Character",
         "completed": false,
         "notes": "",
         "due_on": "2026-05-31",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426576"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426576",
+        "status": "Ready"
       },
       {
         "name": "Callum",
         "completed": false,
         "notes": "",
         "due_on": "2026-06-26",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426365"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426365",
+        "status": "Ready"
       },
       {
         "name": "Carmen",
         "completed": false,
         "notes": "",
         "due_on": "2026-07-11",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426367"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426367",
+        "status": "Ready"
       },
       {
         "name": "Harley",
         "completed": false,
         "notes": "",
         "due_on": "2026-05-29",
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426377"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426377",
+        "status": "Ready"
       }
     ],
     "1.0.0": [
@@ -120,28 +129,32 @@
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614154"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614154",
+        "status": "On Hold"
       },
       {
         "name": "Relationships",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614170"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614170",
+        "status": "On Hold"
       },
       {
         "name": "Events",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614172"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614172",
+        "status": "On Hold"
       },
       {
         "name": "Phone Menu",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614195"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614195",
+        "status": "On Hold"
       }
     ],
     "3.0.0": [
@@ -150,28 +163,32 @@
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614156"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614156",
+        "status": "On Hold"
       },
       {
         "name": "Aviary",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614158"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614158",
+        "status": "On Hold"
       },
       {
         "name": "Economy",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614162"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614162",
+        "status": "On Hold"
       },
       {
         "name": "Industry Progression",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614178"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614178",
+        "status": "On Hold"
       }
     ],
     "2.0.0": [
@@ -180,28 +197,32 @@
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614166"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614166",
+        "status": "On Hold"
       },
       {
         "name": "Festivals",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614174"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614174",
+        "status": "On Hold"
       },
       {
         "name": "Character Customization",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614176"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614176",
+        "status": "On Hold"
       },
       {
         "name": "Quests",
         "completed": false,
         "notes": "",
         "due_on": null,
-        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614180"
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614180",
+        "status": "On Hold"
       }
     ]
   }
