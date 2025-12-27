@@ -4,6 +4,8 @@ Public facing roadmap for Deep Roots
 ## Overview
 This repository automatically syncs tasks from an Asana project to generate a public roadmap. The roadmap is updated daily via GitHub Actions and organized by release.
 
+[View the project on GitHub](https://github.com/LandonJPGinn/DeepRoots-Roadmap)
+
 ## Setup
 
 ### Prerequisites
