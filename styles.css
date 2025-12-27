@@ -186,6 +186,46 @@ main {
 .status-deployed .status-dot { background-color: var(--status-deployed); }
 .status-on-hold .status-dot { background-color: var(--status-on-hold); }
 
+/* Task Relations (Subtasks and Dependencies) */
+.task-relations {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.relation-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.relation-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.relation-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.9rem;
+    color: var(--subtle-text-color);
+}
+
+.relation-list li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.relation-list li.completed {
+    text-decoration: line-through;
+}
+
+.relation-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--subtle-text-color);
+    margin-top: var(--spacing-sm);
+}
+
 /* Footer */
 footer {
     text-align: center;

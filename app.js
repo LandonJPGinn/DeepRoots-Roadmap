@@ -137,6 +137,73 @@ function createTaskElement(taskData) {
         taskCard.appendChild(taskStatus);
     }
 
+    // Create a container for subtasks and dependencies
+    const relationsContainer = document.createElement('div');
+    relationsContainer.className = 'task-relations';
+    taskCard.appendChild(relationsContainer);
+
+    // Display subtasks if they exist
+    if (taskData.subtasks && taskData.subtasks.length > 0) {
+        const subtasksContainer = document.createElement('div');
+        subtasksContainer.className = 'relation-group';
+
+        const subtasksTitle = document.createElement('div');
+        subtasksTitle.className = 'relation-title';
+        subtasksTitle.textContent = 'Subtasks';
+        subtasksContainer.appendChild(subtasksTitle);
+
+        const subtasksList = document.createElement('ul');
+        subtasksList.className = 'relation-list';
+        taskData.subtasks.forEach(subtask => {
+            const item = document.createElement('li');
+            item.textContent = subtask.name;
+            if (subtask.completed) {
+                item.classList.add('completed');
+            }
+            subtasksList.appendChild(item);
+        });
+        subtasksContainer.appendChild(subtasksList);
+
+        const subtasksCount = document.createElement('div');
+        subtasksCount.className = 'relation-count';
+        const completedSubtasks = taskData.subtasks.filter(t => t.completed).length;
+        subtasksCount.textContent = `${completedSubtasks}/${taskData.subtasks.length} Completed`;
+        subtasksContainer.appendChild(subtasksCount);
+
+        relationsContainer.appendChild(subtasksContainer);
+    }
+
+    // Display dependencies if they exist
+    if (taskData.dependencies && taskData.dependencies.length > 0) {
+        const dependenciesContainer = document.createElement('div');
+        dependenciesContainer.className = 'relation-group';
+
+        const dependenciesTitle = document.createElement('div');
+        dependenciesTitle.className = 'relation-title';
+        dependenciesTitle.textContent = 'Dependencies';
+        dependenciesContainer.appendChild(dependenciesTitle);
+
+        const dependenciesList = document.createElement('ul');
+        dependenciesList.className = 'relation-list';
+        taskData.dependencies.forEach(dependency => {
+            const item = document.createElement('li');
+            item.textContent = dependency.name;
+            if (dependency.completed) {
+                item.classList.add('completed');
+            }
+            dependenciesList.appendChild(item);
+        });
+        dependenciesContainer.appendChild(dependenciesList);
+
+        const dependenciesCount = document.createElement('div');
+        dependenciesCount.className = 'relation-count';
+        const completedDependencies = taskData.dependencies.filter(t => t.completed).length;
+        dependenciesCount.textContent = `${completedDependencies}/${taskData.dependencies.length} Completed`;
+        dependenciesContainer.appendChild(dependenciesCount);
+
+        relationsContainer.appendChild(dependenciesContainer);
+    }
+
     return taskCard;
 }
 
