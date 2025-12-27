@@ -50,47 +50,39 @@ function asanaRequest(path) {
 }
 
 /**
- * Fetches the first task from the Asana project and all its details.
+ * Fetch all tasks from the Asana project with all available fields,
+ * and then fetch all sub-resources for each task.
  */
-async function fetchFirstTaskData() {
-  console.log('Fetching the first task from the Asana project...');
+async function fetchAllTaskData() {
+  console.log('Fetching all task data from Asana project...');
 
-  // Get the compact representation of the first task to get its GID
-  const taskListResponse = await asanaRequest(
-    `/api/1.0/projects/${ASANA_PROJECT_ID}/tasks?limit=1`
+  // Use opt_expand to get all available fields for the tasks.
+  const response = await asanaRequest(
+    `/api/1.0/projects/${ASANA_PROJECT_ID}/tasks?opt_expand=.`
   );
 
-  if (!taskListResponse.data || taskListResponse.data.length === 0) {
-    console.log('No tasks found in the project.');
-    return [];
+  const tasks = response.data;
+  const detailedTasks = [];
+
+  for (const task of tasks) {
+    console.log(`Fetching details for task: "${task.name}"`);
+
+    // For each task, fetch its subtasks, dependencies, and dependents
+    const [subtasks, dependencies, dependents] = await Promise.all([
+      asanaRequest(`/api/1.0/tasks/${task.gid}/subtasks?opt_expand=.`),
+      asanaRequest(`/api/1.0/tasks/${task.gid}/dependencies?opt_expand=.`),
+      asanaRequest(`/api/1.0/tasks/${task.gid}/dependents?opt_expand=.`),
+    ]);
+
+    detailedTasks.push({
+      ...task,
+      subtasks: subtasks.data,
+      dependencies: dependencies.data,
+      dependents: dependents.data,
+    });
   }
 
-  const taskGid = taskListResponse.data[0].gid;
-  console.log(`Found task with GID: ${taskGid}. Fetching full details...`);
-
-  // Fetch the full task details and its sub-resources concurrently
-  const [
-    taskDetailsResponse,
-    subtasksResponse,
-    dependenciesResponse,
-    dependentsResponse
-  ] = await Promise.all([
-    asanaRequest(`/api/1.0/tasks/${taskGid}?opt_expand=.`),
-    asanaRequest(`/api/1.0/tasks/${taskGid}/subtasks?opt_expand=.`),
-    asanaRequest(`/api/1.0/tasks/${taskGid}/dependencies?opt_expand=.`),
-    asanaRequest(`/api/1.0/tasks/${taskGid}/dependents?opt_expand=.`),
-  ]);
-
-  // Combine all the data into a single object
-  const detailedTask = {
-    ...taskDetailsResponse.data,
-    subtasks: subtasksResponse.data,
-    dependencies: dependenciesResponse.data,
-    dependents: dependentsResponse.data,
-  };
-
-  // Return as an array to keep the data structure consistent
-  return [detailedTask];
+  return detailedTasks;
 }
 
 /**
@@ -101,7 +93,7 @@ async function main() {
     console.log('Starting Asana debug dump...');
 
     // Fetch all task data
-    const allTaskData = await fetchFirstTaskData();
+    const allTaskData = await fetchAllTaskData();
 
     // Write to JSON file
     const output = {
