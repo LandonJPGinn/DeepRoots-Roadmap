@@ -102,7 +102,7 @@ async function fetchDependencies(taskGid) {
 /**
  * Process and organize tasks
  */
-async function organizeTasks(tasks) {
+async function organizeTasks(tasks, config) {
   console.log(`Processing ${tasks.length} tasks...`);
 
   // Filter tasks with "public" tag
@@ -114,50 +114,90 @@ async function organizeTasks(tasks) {
 
   console.log(`Found ${publicTasks.length} public tasks`);
 
-  // Organize by release custom field
+  const { taskGroupingField, displayFields, filterFields } = config;
+
+  // Filter tasks based on filterFields in config
+  let filteredTasks = publicTasks;
+  if (filterFields && Object.keys(filterFields).length > 0) {
+    console.log('Applying filters from config.json...');
+    filteredTasks = publicTasks.filter(task => {
+      return Object.entries(filterFields).every(([fieldName, allowedValues]) => {
+        const fieldNameLower = fieldName.toLowerCase();
+        let taskValue;
+
+        // Find the task's value for the field (checking direct properties first, then custom fields)
+        if (task[fieldNameLower] !== undefined) {
+          taskValue = task[fieldNameLower];
+        } else if (task.custom_fields) {
+          const customField = task.custom_fields.find(cf => cf.name && cf.name.toLowerCase() === fieldNameLower);
+          taskValue = customField ? customField.display_value : undefined;
+        }
+
+        // If task doesn't have the field, it doesn't match the filter.
+        if (taskValue === undefined) {
+          return false;
+        }
+
+        // Check if the task's value is in the allowed list.
+        return allowedValues.includes(taskValue);
+      });
+    });
+  }
+  console.log(`Found ${filteredTasks.length} tasks after filtering`);
+
+  // Organize by the custom field specified in config.json
   const roadmap = {};
 
-  for (const task of publicTasks) {
-    // Find the release and status custom fields
-    let release = 'Unscheduled';
-    let status = 'On Hold'; // Default status
+  for (const task of filteredTasks) {
+    let groupingValue = 'Unscheduled';
 
     if (task.custom_fields && task.custom_fields.length > 0) {
-      const releaseField = task.custom_fields.find(field =>
-        field.name && field.name.toLowerCase().includes('release')
+      const groupingField = task.custom_fields.find(field =>
+        field.name && field.name.toLowerCase() === taskGroupingField.toLowerCase()
       );
-      if (releaseField && releaseField.display_value) {
-        release = releaseField.display_value;
-      }
-
-      const statusField = task.custom_fields.find(field =>
-        field.name && field.name.toLowerCase() === 'status'
-      );
-      if (statusField && statusField.display_value) {
-        status = statusField.display_value;
+      if (groupingField && groupingField.display_value) {
+        groupingValue = groupingField.display_value;
       }
     }
 
-    // Initialize release array if it doesn't exist
-    if (!roadmap[release]) {
-      roadmap[release] = [];
+    if (!roadmap[groupingValue]) {
+      roadmap[groupingValue] = [];
     }
 
     // Fetch subtasks and dependencies
     const subtasks = await fetchSubtasks(task.gid);
     const dependencies = await fetchDependencies(task.gid);
 
-    // Add task to the release
-    roadmap[release].push({
+    // Build the task object
+    const taskOutput = {
       name: task.name,
       completed: task.completed || false,
-      notes: task.notes || '',
       due_on: task.due_on || null,
       url: task.permalink_url || null,
-      status: status,
       subtasks: subtasks.map(t => ({ name: t.name, completed: t.completed })),
       dependencies: dependencies.map(t => ({ name: t.name, completed: t.completed })),
-    });
+    };
+
+    // Add fields specified in displayFields
+    for (const fieldName of displayFields) {
+      const fieldNameLower = fieldName.toLowerCase();
+
+      // Check for built-in/direct properties on the task object
+      if (task[fieldNameLower] !== undefined) {
+        taskOutput[fieldNameLower] = task[fieldNameLower] || (fieldNameLower === 'notes' ? '' : null);
+      }
+      // Check for custom fields
+      else if (task.custom_fields) {
+        const customField = task.custom_fields.find(cf =>
+          cf.name && cf.name.toLowerCase() === fieldNameLower
+        );
+        taskOutput[fieldNameLower] = customField ? customField.display_value : null;
+      } else {
+        taskOutput[fieldNameLower] = null;
+      }
+    }
+
+    roadmap[groupingValue].push(taskOutput);
   }
 
   return roadmap;
@@ -170,11 +210,21 @@ async function main() {
   try {
     console.log('Starting Asana sync...');
 
+    // Read config file
+    let config;
+    try {
+      config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+      console.log('Loaded config.json');
+    } catch (error) {
+      console.error('Error reading or parsing config.json:', error.message);
+      process.exit(1);
+    }
+
     // Fetch tasks from Asana
     const tasks = await fetchTasks();
 
-    // Organize tasks by release
-    const roadmap = await organizeTasks(tasks);
+    // Organize tasks based on config
+    const roadmap = await organizeTasks(tasks, config);
 
     // Write to JSON file
     const output = {
@@ -187,8 +237,8 @@ async function main() {
 
     // Log summary
     console.log('\nSummary:');
-    Object.keys(roadmap).forEach(release => {
-      console.log(`  ${release}: ${roadmap[release].length} tasks`);
+    Object.keys(roadmap).forEach(groupingValue => {
+      console.log(`  ${groupingValue}: ${roadmap[groupingValue].length} tasks`);
     });
 
   } catch (error) {
