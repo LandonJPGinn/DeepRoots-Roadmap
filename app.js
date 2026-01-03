@@ -1,5 +1,6 @@
 // Configuration
 const ROADMAP_JSON_PATH = 'roadmap.json';
+const CONFIG_JSON_PATH = 'config.json';
 
 // DOM Elements
 const roadmapContainer = document.getElementById('roadmap-container');
@@ -15,19 +16,31 @@ document.addEventListener('DOMContentLoaded', loadRoadmapData);
  */
 async function loadRoadmapData() {
     try {
-        const response = await fetch(ROADMAP_JSON_PATH);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const [roadmapResponse, configResponse] = await Promise.all([
+            fetch(ROADMAP_JSON_PATH),
+            fetch(CONFIG_JSON_PATH)
+        ]);
+
+        if (!roadmapResponse.ok) {
+            throw new Error(`HTTP error! status: ${roadmapResponse.status}`);
         }
-        const data = await response.json();
+        if (!configResponse.ok) {
+            throw new Error(`HTTP error! status: ${configResponse.status}`);
+        }
+
+        const roadmapData = await roadmapResponse.json();
+        const configData = await configResponse.json();
 
         // Validate data structure
-        if (!data || !data.releases || typeof data.releases !== 'object') {
+        if (!roadmapData || !roadmapData.releases || typeof roadmapData.releases !== 'object') {
             throw new Error('Invalid roadmap data structure: "releases" object not found.');
         }
+        if (!configData || !Array.isArray(configData.displayFields)) {
+            throw new Error('Invalid config structure: "displayFields" array not found.');
+        }
 
-        renderRoadmap(data);
-        updateTimestamp(data.lastUpdated);
+        renderRoadmap(roadmapData, configData);
+        updateTimestamp(roadmapData.lastUpdated);
 
     } catch (e) {
         console.error('Failed to load or render roadmap:', e);
@@ -39,13 +52,14 @@ async function loadRoadmapData() {
 
 /**
  * Renders the entire roadmap from the provided data.
- * @param {object} data - The roadmap data object.
+ * @param {object} roadmapData - The roadmap data object.
+ * @param {object} configData - The configuration object.
  */
-function renderRoadmap(data) {
+function renderRoadmap(roadmapData, configData) {
     // Clear any existing content
     roadmapContainer.innerHTML = '';
 
-    const releaseKeys = Object.keys(data.releases);
+    const releaseKeys = Object.keys(roadmapData.releases);
 
     if (releaseKeys.length === 0) {
         roadmapContainer.innerHTML = '<p class="no-tasks">No releases found.</p>';
@@ -53,8 +67,8 @@ function renderRoadmap(data) {
     }
 
     releaseKeys.forEach(releaseName => {
-        const tasks = data.releases[releaseName];
-        const releaseColumn = createReleaseColumn(releaseName, tasks);
+        const tasks = roadmapData.releases[releaseName];
+        const releaseColumn = createReleaseColumn(releaseName, tasks, configData);
         roadmapContainer.appendChild(releaseColumn);
     });
 }
@@ -63,9 +77,10 @@ function renderRoadmap(data) {
  * Creates a column for a single release.
  * @param {string} releaseName - The name of the release.
  * @param {Array<object>} tasks - An array of task objects.
+ * @param {object} configData - The configuration object.
  * @returns {HTMLElement} The created column element.
  */
-function createReleaseColumn(releaseName, tasks) {
+function createReleaseColumn(releaseName, tasks, configData) {
     const column = document.createElement('div');
     column.className = 'release-column';
 
@@ -81,7 +96,7 @@ function createReleaseColumn(releaseName, tasks) {
         tasksContainer.innerHTML = '<p class="no-tasks">No tasks in this release.</p>';
     } else {
         tasks.forEach(taskData => {
-            const taskElement = createTaskElement(taskData);
+            const taskElement = createTaskElement(taskData, configData);
             tasksContainer.appendChild(taskElement);
         });
     }
@@ -93,18 +108,19 @@ function createReleaseColumn(releaseName, tasks) {
 /**
  * Creates an element for a single task.
  * @param {object} taskData - The data for the task.
+ * @param {object} configData - The configuration object.
  * @returns {HTMLElement} The created task element.
  */
-function createTaskElement(taskData) {
+function createTaskElement(taskData, configData) {
     const taskCard = document.createElement('div');
     taskCard.className = 'task-card';
     if (taskData.completed) {
         taskCard.classList.add('completed');
     }
 
-    // Add a class for the status
-    if (taskData.status) {
-        const statusClass = `status-${taskData.status.toLowerCase().replace(/\s+/g, '-')}`;
+    const status = taskData.status;
+    if (status) {
+        const statusClass = `status-${status.toLowerCase().replace(/\s+/g, '-')}`;
         taskCard.classList.add(statusClass);
     }
 
@@ -113,29 +129,38 @@ function createTaskElement(taskData) {
     taskName.textContent = taskData.name || 'Unnamed Task';
     taskCard.appendChild(taskName);
 
-    if (taskData.notes) {
-        const taskNotes = document.createElement('div');
-        taskNotes.className = 'task-notes';
-        taskNotes.textContent = taskData.notes;
-        taskCard.appendChild(taskNotes);
-    }
+    // Display fields based on config
+    configData.displayFields.forEach(fieldName => {
+        const fieldKey = fieldName.toLowerCase();
+        if (taskData[fieldKey]) {
+            let fieldElement;
+            if (fieldKey === 'status') {
+                fieldElement = document.createElement('div');
+                fieldElement.className = 'task-status';
 
-    // Create and append the status element
-    if (taskData.status) {
-        const taskStatus = document.createElement('div');
-        taskStatus.className = 'task-status';
+                const statusDot = document.createElement('span');
+                statusDot.className = 'status-dot';
+                fieldElement.appendChild(statusDot);
 
-        const statusDot = document.createElement('span');
-        statusDot.className = 'status-dot';
-        taskStatus.appendChild(statusDot);
+                const statusLabel = document.createElement('span');
+                statusLabel.className = 'status-label';
+                statusLabel.textContent = taskData[fieldKey];
+                fieldElement.appendChild(statusLabel);
 
-        const statusLabel = document.createElement('span');
-        statusLabel.className = 'status-label';
-        statusLabel.textContent = taskData.status;
-        taskStatus.appendChild(statusLabel);
+            } else if (fieldKey === 'notes') {
+                fieldElement = document.createElement('div');
+                fieldElement.className = 'task-notes';
+                fieldElement.textContent = taskData[fieldKey];
+            } else {
+                // Generic display for other fields
+                fieldElement = document.createElement('div');
+                fieldElement.className = `task-field task-${fieldKey}`;
+                fieldElement.innerHTML = `<span class="field-label">${fieldName}:</span> <span class="field-value">${taskData[fieldKey]}</span>`;
+            }
+            taskCard.appendChild(fieldElement);
+        }
+    });
 
-        taskCard.appendChild(taskStatus);
-    }
 
     // Create a container for subtasks and dependencies
     const relationsContainer = document.createElement('div');

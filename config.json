@@ -1,0 +1,7 @@
+{
+  "taskGroupingField": "Release",
+  "displayFields": [
+    "status",
+    "notes"
+  ]
+}
