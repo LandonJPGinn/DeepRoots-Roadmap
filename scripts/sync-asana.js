@@ -114,11 +114,41 @@ async function organizeTasks(tasks, config) {
 
   console.log(`Found ${publicTasks.length} public tasks`);
 
+  const { taskGroupingField, displayFields, filterFields } = config;
+
+  // Filter tasks based on filterFields in config
+  let filteredTasks = publicTasks;
+  if (filterFields && Object.keys(filterFields).length > 0) {
+    console.log('Applying filters from config.json...');
+    filteredTasks = publicTasks.filter(task => {
+      return Object.entries(filterFields).every(([fieldName, allowedValues]) => {
+        const fieldNameLower = fieldName.toLowerCase();
+        let taskValue;
+
+        // Find the task's value for the field (checking direct properties first, then custom fields)
+        if (task[fieldNameLower] !== undefined) {
+          taskValue = task[fieldNameLower];
+        } else if (task.custom_fields) {
+          const customField = task.custom_fields.find(cf => cf.name && cf.name.toLowerCase() === fieldNameLower);
+          taskValue = customField ? customField.display_value : undefined;
+        }
+
+        // If task doesn't have the field, it doesn't match the filter.
+        if (taskValue === undefined) {
+          return false;
+        }
+
+        // Check if the task's value is in the allowed list.
+        return allowedValues.includes(taskValue);
+      });
+    });
+  }
+  console.log(`Found ${filteredTasks.length} tasks after filtering`);
+
   // Organize by the custom field specified in config.json
   const roadmap = {};
-  const { taskGroupingField, displayFields } = config;
 
-  for (const task of publicTasks) {
+  for (const task of filteredTasks) {
     let groupingValue = 'Unscheduled';
 
     if (task.custom_fields && task.custom_fields.length > 0) {

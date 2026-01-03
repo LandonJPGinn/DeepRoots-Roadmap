@@ -3,5 +3,14 @@
   "displayFields": [
     "status",
     "notes"
-  ]
+  ],
+  "filterFields": {
+    "Status": [
+      "In Progress",
+      "Ready",
+      "Testing",
+      "Completed",
+      "Deployed"
+    ]
+  }
 }
