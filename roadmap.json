@@ -1,4 +1,238 @@
 {
-  "lastUpdated": "2026-01-08T00:24:52.336Z",
+  "lastUpdated": "2026-01-06T00:24:41.988Z",
+  "releases": {
+    "0.0.1": [
+      {
+        "name": "Farming",
+        "completed": false,
+        "due_on": "2026-03-03",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614146",
+        "subtasks": [],
+        "dependencies": [
+          {
+            "name": "Carrot",
+            "completed": false
+          }
+        ],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Ranching",
+        "completed": false,
+        "due_on": "2026-08-15",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614148",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "FIshing",
+        "completed": false,
+        "due_on": "2027-01-01",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614150",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Bird Keeping",
+        "completed": false,
+        "due_on": "2026-07-28",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614152",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Shopping",
+        "completed": false,
+        "due_on": "2026-11-12",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614160",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Foraging",
+        "completed": false,
+        "due_on": "2026-06-06",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614164",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Movement Controls",
+        "completed": false,
+        "due_on": "2026-01-31",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614168",
+        "subtasks": [
+          {
+            "name": "Standard Movement Research",
+            "completed": false
+          },
+          {
+            "name": "Jumping",
+            "completed": true
+          },
+          {
+            "name": "Action Snappiness",
+            "completed": false
+          },
+          {
+            "name": "Action Feedback",
+            "completed": false
+          },
+          {
+            "name": "Highlighting",
+            "completed": false
+          },
+          {
+            "name": "Interact with everything",
+            "completed": false
+          },
+          {
+            "name": "To mouse or not to mouse?",
+            "completed": false
+          },
+          {
+            "name": "aiming",
+            "completed": false
+          }
+        ],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": "Need to hone in on movement controls that feel fun and enjoyable without turning the farmer into a high energy maniac\n\n"
+      },
+      {
+        "name": "Dialog",
+        "completed": false,
+        "due_on": "2026-10-28",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614191",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Inventory",
+        "completed": false,
+        "due_on": "2026-10-09",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212583712614193",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Tomato",
+        "completed": false,
+        "due_on": "2026-03-14",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572677627840",
+        "subtasks": [
+          {
+            "name": "Icon",
+            "completed": false
+          },
+          {
+            "name": "growth progression meshes",
+            "completed": false
+          },
+          {
+            "name": "textures",
+            "completed": false
+          },
+          {
+            "name": "fruit collectable mesh",
+            "completed": false
+          },
+          {
+            "name": "description",
+            "completed": false
+          }
+        ],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Strawberries",
+        "completed": false,
+        "due_on": "2026-03-14",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212572678690536",
+        "subtasks": [
+          {
+            "name": "Icon",
+            "completed": false
+          },
+          {
+            "name": "growth progression meshes",
+            "completed": false
+          },
+          {
+            "name": "textures",
+            "completed": false
+          },
+          {
+            "name": "fruit collectable mesh",
+            "completed": false
+          },
+          {
+            "name": "description",
+            "completed": false
+          }
+        ],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Main Character",
+        "completed": false,
+        "due_on": "2026-05-31",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426576",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Callum",
+        "completed": false,
+        "due_on": "2026-06-26",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426365",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Carmen",
+        "completed": false,
+        "due_on": "2026-07-11",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426367",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      },
+      {
+        "name": "Harley",
+        "completed": false,
+        "due_on": "2026-05-29",
+        "url": "https://app.asana.com/1/454912460395594/project/1211962765472603/task/1212563229426377",
+        "subtasks": [],
+        "dependencies": [],
+        "status": "Ready",
+        "notes": ""
+      }
+    ]
+  }
+  "lastUpdated": "2026-01-07T00:23:19.841Z",
   "releases": {}
-}
