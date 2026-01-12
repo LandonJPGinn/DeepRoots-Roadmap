@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-06T00:24:41.988Z",
+  "lastUpdated": "2026-01-12T22:46:12.521Z",
   "releases": {
     "0.0.1": [
       {
@@ -104,11 +104,15 @@
           {
             "name": "aiming",
             "completed": false
+          },
+          {
+            "name": "Player Camera",
+            "completed": false
           }
         ],
         "dependencies": [],
         "status": "Ready",
-        "notes": "Need to hone in on movement controls that feel fun and enjoyable without turning the farmer into a high energy maniac\n\n"
+        "notes": "Need to hone in on movement controls that feel fun and enjoyable without turning the farmer into a high energy maniac\n\n\nFor every topic be sure to do the following:\n\n    Watch content for examples\n    Ask Communities for their favorites\n    Weigh pros and cons of options\n    Remember the audience\n    Ask if it stands out in a crowd where people look over, and cannot hear it\n    is the solution as frictionless as possible\n"
       },
       {
         "name": "Dialog",
@@ -234,5 +238,4 @@
       }
     ]
   }
-  "lastUpdated": "2026-01-07T00:23:19.841Z",
-  "releases": {}
+}
